@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import { TasksCollection } from '/imports/api/tasksCollection';
 import '../imports/api/tasksPublications';
+import '/imports/api/tasksMethods';
 
 
 const insertTask = async text => await TasksCollection.insertAsync({ text });
