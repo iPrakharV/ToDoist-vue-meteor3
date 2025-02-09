@@ -22,7 +22,7 @@ Ensure that you have **Node.js**, **Meteor**, and **npm** installed on your syst
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/todoist-vue-meteor3.git
+git clone https://github.com/iprakharv/todoist-vue-meteor3.git
 cd todoist-vue-meteor3
 
 # Install dependencies
