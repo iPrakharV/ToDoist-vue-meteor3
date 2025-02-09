@@ -1,21 +1,42 @@
-import { Meteor } from 'meteor/meteor'
-import { TasksCollection } from '/imports/api/tasksCollection';
+import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
+import { TasksCollection } from '../imports/api/tasksCollection';
 import '../imports/api/tasksPublications';
-import '/imports/api/tasksMethods';
+import '../imports/api/tasksMethods';
 
+const SEED_USERNAME = 'meteorite';
+const SEED_PASSWORD = 'password';
 
-const insertTask = async text => await TasksCollection.insertAsync({ text });
+const createFirstUser = async () => {
+  const user = await Accounts.findUserByUsername(SEED_USERNAME);
+  if (!user) {
+    await Accounts.createUserAsync({
+      username: SEED_USERNAME,
+      password: SEED_PASSWORD,
+    });
+  }
+}
 
+const insertTask = async (text, userId) => {
+  await TasksCollection.insertAsync({text, userId, createdAt: new Date()});
+}
+
+const createTasks = async () => {
+  const tasksCount = await TasksCollection.find().countAsync();
+  if (tasksCount === 0) {
+    const user = await Accounts.findUserByUsername(SEED_USERNAME);
+
+    await insertTask('First Task', user._id);
+    await insertTask('Second Task', user._id);
+    await insertTask('Third Task', user._id);
+    await insertTask('Fourth Task', user._id);
+    await insertTask('Fifth Task', user._id);
+    await insertTask('Sixth Task', user._id);
+    await insertTask('Seventh Task', user._id);
+  }
+}
 
 Meteor.startup(async () => {
-  const tasksCount = await TasksCollection.find({}).countAsync();
-  //noticed how theres mention of async in the above line
-
-  if (tasksCount === 0) {
-    await insertTask('First Task');
-    await insertTask('Second Task');
-    await insertTask('Third Task');
-    await insertTask('Fourth Task');
-  }
-
-})
+  await createFirstUser();
+  await createTasks();
+});
