@@ -59,3 +59,6 @@ We welcome contributions to improve ToDoist Vue Meteor3. To contribute:
 ## License
 This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for more details.
 
+
+
+Inspiration: https://docs.meteor.com/tutorials/vue/meteorjs3-vue3-vue-meteor-tracker.html#-6-filter-tasks
