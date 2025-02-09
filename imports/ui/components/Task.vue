@@ -33,17 +33,15 @@ const deleteTask = async () => {
 </script>
 
 <template>
-  <div class="flex items-center rounded px-4 py-2 mb-2">
+  <div class="flex items-center rounded p-4 py-2 mb-2 shadow-sm border border-gray-200 md:mr-8">
     <li>
-      <input v-model="taskRef.checked" type="checkbox" :checked="isChecked" @change="handleCheckboxChange" />
+      <input v-model="taskRef.checked" type="checkbox" readonly :checked="isChecked" @change="handleCheckboxChange" />
     </li>
     <span class="text-gray-600 pl-2" :class="{ 'text-gray-400 italic line-through': taskRef.checked }">
-  {{ task.text }}
-</span>
-
-<button 
-    class="ml-auto bg-red-500 hover:bg-red-600 text-white font-bold py-0.5 px-2 rounded"
-    @click="deleteTask"> &times; 
-</button>
+      {{ task.text }}
+    </span>
+    <button class="ml-auto bg-red-500 hover:bg-red-600 text-white font-bold py-0.5 px-2 rounded" @click="deleteTask">
+      &times;
+    </button>
   </div>
 </template>
