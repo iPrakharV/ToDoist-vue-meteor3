@@ -6,7 +6,6 @@
 
     <h1 class="text-4xl font-bold text-gray-800 my-4 text-center">Edit User</h1>
 
-    <!-- If a phone number exists and we're not editing, show it -->
     <div v-if="!isEditing && user.phone">
       <p class="text-center text-lg">
         Current Phone Number: <span class="font-bold">{{ user.phone }}</span>
@@ -21,7 +20,6 @@
       </div>
     </div>
 
-    <!-- If there's no phone or we're in editing mode, show the form -->
     <form v-else @submit.prevent="saveUser">
       <div class="form-group mb-4">
         <label for="phone" class="block text-gray-700 text-sm font-bold mb-2">
@@ -60,6 +58,7 @@
 
 <script>
 import { Meteor } from 'meteor/meteor'
+import validatePhoneNumber from 'npm-phone-number-validator'
 
 export default {
   name: 'UserEdit',
@@ -77,13 +76,17 @@ export default {
     const currentUser = Meteor.user()
     const phone = currentUser?.profile?.phone || ''
     this.user.phone = phone
-    // If no phone exists, we want the form open for input.
     this.isEditing = !phone
   },
   methods: {
     filterInput(e) {
-      // Only allow digits in the phone field.
-      this.user.phone = e.target.value.replace(/\D/g, '')
+      const result = validatePhoneNumber(e.target.value)
+      if (result.valid) {
+        this.user.phone = result.phone
+        this.error = ''
+      } else {
+        this.error = result.message
+      }
     },
     saveUser() {
       this.message = ''
@@ -110,7 +113,6 @@ export default {
       const currentUser = Meteor.user()
       const phone = currentUser?.profile?.phone || ''
       this.user.phone = phone
-      // Stay in editing mode if no phone exists.
       this.isEditing = !phone
     },
     goBack() {
